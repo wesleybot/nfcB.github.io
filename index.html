@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC 智能解鎖</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="generateSection">
+        <h1>NFC 智能解鎖 - 生成代碼</h1>
+        <p>請點擊按鈕生成解鎖代碼。</p>
+        <button onclick="generateCode()">生成代碼</button>
+        <div id="codeDisplay" style="margin-top: 20px; font-size: 24px; color: #333;"></div>
+        <button class="hidden" id="continueButton" onclick="goToVerify()">繼續到解鎖</button>
+    </div>
+
+    <div class="container hidden" id="verifySection">
+        <h1>NFC 智能解鎖 - 驗證代碼</h1>
+        <p>請輸入解鎖代碼以開啟櫃門。</p>
+        <input type="text" id="inputCode" placeholder="輸入代碼">
+        <button onclick="verifyCode()">解鎖</button>
+        <div id="result" style="margin-top: 20px; font-size: 18px; color: red;"></div>
+    </div>
+
+    <script>
+        let generatedCode; // 儲存生成的解鎖代碼
+
+        function generateCode() {
+            // 生成 6 位隨機數字
+            generatedCode = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('codeDisplay').innerText = `您的解鎖代碼是：${generatedCode}`;
+            // 顯示繼續按鈕
+            document.getElementById('continueButton').classList.remove('hidden');
+        }
+
+        function goToVerify() {
+            // 隱藏生成代碼區域，顯示驗證代碼區域
+            document.getElementById('generateSection').classList.add('hidden');
+            document.getElementById('verifySection').classList.remove('hidden');
+        }
+
+        function verifyCode() {
+            // 獲取用戶輸入的代碼
+            const inputCode = document.getElementById('inputCode').value;
+            // 驗證代碼是否正確
+            if (inputCode == generatedCode) {
+                document.getElementById('result').innerText = "解鎖成功！";
+                document.getElementById('result').style.color = "green";
+                // 此處可添加解鎖硬件的邏輯
+            } else {
+                document.getElementById('result').innerText = "代碼錯誤，請重試。";
+                document.getElementById('result').style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
